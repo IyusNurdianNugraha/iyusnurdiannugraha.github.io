@@ -34,21 +34,20 @@
 
   <!-- Header -->
   <header class="bg-gray-800 text-white p-6 shadow-md dark:bg-gray-900">
-    <div class="container mx-auto flex flex-col items-center text-center">
-      <h1 class="text-3xl font-bold">Iyus Nurdian Nugraha</h1>
-      <p class="text-sm">IT Support • Junior Programmer • Warehouse • Pelayanan</p>
-      <div class="flex flex-wrap justify-center gap-4 mt-2 text-sm">
-        <a href="https://www.facebook.com/iyusnurdiannugraha" target="_blank" class="hover:underline">Facebook</a>
-        <a href="https://www.instagram.com/iyusnurdiannugraha" target="_blank" class="hover:underline">Instagram</a>
-        <a href="https://www.tiktok.com/@iyusnurdiannugrahaa" target="_blank" class="hover:underline">Tiktok</a>
-      </div>
+  <div class="container mx-auto flex flex-col items-center text-center">
+    <h1 class="text-3xl font-bold">Iyus Nurdian Nugraha</h1>
+    <p class="text-sm">IT Support • Junior Programmer • Warehouse • Pelayanan</p>
+    <div class="flex flex-wrap justify-center gap-4 mt-2 text-sm">
+      <a href="https://www.facebook.com/iyusnurdiannugraha" target="_blank" class="hover:underline">Facebook</a>
+      <a href="https://www.instagram.com/iyusnurdiannugraha" target="_blank" class="hover:underline">Instagram</a>
+      <a href="https://www.tiktok.com/@iyusnurdiannugrahaa" target="_blank" class="hover:underline">Tiktok</a>
     </div>
-    <div class="fixed top-4 right-4 flex items-center gap-2 bg-gray-800 dark:bg-gray-900 p-2 rounded">
-      <label for="darkModeToggle" class="cursor-pointer select-none text-white text-sm">Dark Mode</label>
-      <input type="checkbox" id="darkModeToggle" class="toggle-checkbox" />
-    </div>
-  </header>
-  
+  </div>
+  <div class="fixed top-4 right-4 flex items-center gap-2 bg-gray-800 dark:bg-gray-900 p-2 rounded">
+    <label for="darkModeToggle" class="cursor-pointer select-none text-white text-sm">Dark Mode</label>
+    <input type="checkbox" id="darkModeToggle" class="toggle-checkbox" />
+  </div>
+</header>
   <!-- Konten -->
   <main class="px-4 py-6 max-w-xl mx-auto">
     <section>
@@ -125,20 +124,6 @@
       <div class="flex justify-center mt-4">
         <button id="restartBtn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded">Restart Game</button>
       </div>
-
-      <!-- Nama dan Komentar -->
-      <section class="mt-6">
-        <h2 class="text-lg font-semibold mb-2">Masukkan Nama & Komentar</h2>
-        <input id="playerName" class="mb-2 p-2 border rounded w-full" type="text" placeholder="Nama Anda" />
-        <textarea id="playerComment" class="mb-2 p-2 border rounded w-full" placeholder="Komentar Anda"></textarea>
-        <button id="saveScoreBtn" class="bg-blue-600 text-white font-bold py-2 px-4 rounded w-full" style="display:none;">Simpan Skor</button>
-      </section>
-
-      <!-- Top Skor -->
-      <section class="mt-6">
-        <h2 class="text-lg font-semibold mb-2">Top 3 Skor Tertinggi</h2>
-        <div id="topScores" class="space-y-2"></div>
-      </section>
     </section>
 
   </main>
@@ -161,7 +146,6 @@
     let dy;
     let gameOver;
     let gameLoopId;
-    let playerScore = 0;
 
     function placeFood() {
       food = {
@@ -182,7 +166,6 @@
       dx = 1;
       dy = 0;
       gameOver = false;
-      playerScore = 0;
       if (gameLoopId) clearTimeout(gameLoopId);
       gameLoopId = setTimeout(gameLoop, 150);
     }
@@ -231,7 +214,6 @@
       // Makan makanan
       if (head.x === food.x && head.y === food.y) {
         placeFood();
-        playerScore++;
       } else {
         snake.pop();
       }
@@ -244,7 +226,6 @@
     function endGame() {
       gameOver = true;
       alert("💀 Game Over! Klik Restart Game untuk main lagi.");
-      document.getElementById('saveScoreBtn').style.display = 'block';
     }
 
     // Kontrol keyboard
@@ -285,43 +266,10 @@
       if (dx === 0) { dx = 1; dy = 0; }
     });
 
-    // Tombol simpan skor
-    document.getElementById('saveScoreBtn').addEventListener('click', saveScore);
-
     // Restart tombol
     document.getElementById("restartBtn").addEventListener("click", () => {
       initGame();
-      document.getElementById('saveScoreBtn').style.display = 'none';
     });
-
-    // Simpan Skor
-    function saveScore() {
-      const name = document.getElementById("playerName").value;
-      const comment = document.getElementById("playerComment").value;
-
-      if (name && comment) {
-        const newScore = { name, score: playerScore, comment };
-        let topScores = JSON.parse(localStorage.getItem("topScores")) || [];
-
-        topScores.push(newScore);
-        topScores = topScores.sort((a, b) => b.score - a.score).slice(0, 3);
-        localStorage.setItem("topScores", JSON.stringify(topScores));
-        displayTopScores();
-      }
-    }
-
-    function displayTopScores() {
-      const topScores = JSON.parse(localStorage.getItem("topScores")) || [];
-      const topScoresContainer = document.getElementById("topScores");
-      topScoresContainer.innerHTML = "";
-
-      topScores.forEach((score, index) => {
-        const scoreElement = document.createElement("div");
-        scoreElement.classList.add("p-2", "bg-gray-100", "rounded", "mb-2");
-        scoreElement.innerHTML = `<strong>${index + 1}. ${score.name}</strong> - ${score.score} Poin<br><em>"${score.comment}"</em>`;
-        topScoresContainer.appendChild(scoreElement);
-      });
-    }
 
     // Toggle dark mode
     const darkModeToggle = document.getElementById("darkModeToggle");
@@ -332,7 +280,6 @@
 
     // Inisialisasi game awal
     initGame();
-    displayTopScores();
   </script>
 </body>
 </html>
