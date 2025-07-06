@@ -3,82 +3,336 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Iyus Nurdian Nugraha – Portofolio</title>
-  <link rel="stylesheet" href="styles.css" />
+  <title>Portofolio Iyus Nurdian Nugraha</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <style>
+    body.dark {
+      background-color: #1f2937; /* bg-gray-800 */
+      color: #d1d5db; /* text-gray-300 */
+    }
+    body.dark header {
+      background-color: #111827; /* bg-gray-900 */
+      color: #e5e7eb; /* text-gray-200 */
+    }
+    body.dark footer {
+      background-color: #111827; /* bg-gray-900 */
+      color: #9ca3af; /* text-gray-400 */
+    }
+    body.dark a {
+      color: #60a5fa; /* text-blue-400 */
+    }
+    body.dark a:hover {
+      text-decoration: underline;
+    }
+    body.dark canvas {
+      border-color: #374151; /* gray-700 */
+      background-color: #111827;
+    }
+  </style>
 </head>
-<body>
-  <header>
-    <h1>Iyus Nurdian Nugraha</h1>
-    <p>IT Support • Junior Programmer • Warehouse • Pelayanan</p>
-    <div class="flex gap-4 mt-2">
+<body class="bg-gray-50 font-sans leading-relaxed">
+
+  <!-- Header -->
+  <header class="bg-gray-800 text-white p-6 shadow-md dark:bg-gray-900">
+    <div class="container mx-auto flex flex-col items-center text-center">
+      <h1 class="text-3xl font-bold">Iyus Nurdian Nugraha</h1>
+      <p class="text-sm">IT Support • Junior Programmer • Warehouse • Pelayanan</p>
+      <div class="flex flex-wrap justify-center gap-4 mt-2 text-sm">
         <a href="https://www.facebook.com/iyusnurdiannugraha" target="_blank" class="hover:underline">Facebook</a>
         <a href="https://www.instagram.com/iyusnurdiannugraha" target="_blank" class="hover:underline">Instagram</a>
         <a href="https://www.tiktok.com/@iyusnurdiannugrahaa" target="_blank" class="hover:underline">Tiktok</a>
       </div>
     </div>
+    <div class="fixed top-4 right-4 flex items-center gap-2 bg-gray-800 dark:bg-gray-900 p-2 rounded">
+      <label for="darkModeToggle" class="cursor-pointer select-none text-white text-sm">Dark Mode</label>
+      <input type="checkbox" id="darkModeToggle" class="toggle-checkbox" />
+    </div>
   </header>
-
-  <main>
+  
+  <!-- Konten -->
+  <main class="px-4 py-6 max-w-xl mx-auto">
     <section>
-      <h2>Tentang Saya</h2>
-      <p> 
-        Sa <section class="p-6 container mx-auto max-w-xl">
-    <h2 class="text-xl font-semibold mb-2">Tentang Saya</h2>
-    <p class="mb-4">Saya Lulusan SMK PGRI 1 Sumedang Jurusan Rekayasa Perangkat Lunak(2015-2018) Saya memiliki motivasi, dedikasi, dan loyalitas tinggi dalam bekerja. Teliti, disiplin, serta mampu berkomunikasi secara efektif dalam tim maupun dengan pelanggan. Tersertifikasi Google IT Support.</p>
+      <h2 class="text-xl font-semibold mb-2">Tentang Saya</h2>
+      <p class="mb-4 text-base">Saya memiliki motivasi, dedikasi, dan loyalitas tinggi dalam bekerja. Teliti, disiplin, serta mampu berkomunikasi secara efektif dalam tim maupun dengan pelanggan.</p>
+    </section>
 
+    <section class="mt-6">
+      <h2 class="text-xl font-semibold mb-2">Pendidikan</h2>
+      <p class="text-base">SMK PGRI 1 Sumedang – Rekayasa Perangkat Lunak (2015 – 2018)</p>
+    </section>
 
-
-    <section>
-      <h2>Kemampuan</h2>
-      <ul>
+    <section class="mt-6">
+      <h2 class="text-xl font-semibold mb-2">Kemampuan</h2>
+      <ul class="list-disc list-inside text-base space-y-1">
         <li>HTML, CSS, JavaScript</li>
         <li>Komputer (Hardware Software & Jaringan)</li>
         <li>Pergudangan Warehouse</li>
         <li>Pelayanan</li>
-    </ul>
-
-    <h2 class="text-xl font-semibold mt-6 mb-2">Sertifikat</h2>
-    <p>Google IT Support Professional Certificate (Juni 2025)</p>
-    <a href="https://www.coursera.org/account/accomplishments/professional-cert/J5UJKMWNXXQT" class="text-blue-600 underline" target="_blank">Lihat Sertifikat di Coursera</a>
-
-    <h2 class="text-xl font-semibold mt-6 mb-2">Pengalaman Kerja</h2>
-    <ul class="list-disc list-inside">
-      <li><strong>PT. Sumber Alfaria Trijaya Tbk</strong> – Kasir,Pramuniaga,Barista,Kurir (Juni 2024 – Juni 2025)</li>
-      <li><strong>PT. Mitra Pembayaran Elektronik</strong> – Collector (April 2023 – Mei 2023)</li>
-      <li><strong>PT. Alva Karya Perkasa</strong> – Office Boy (Agustus 2022 – Oktober 2022)</li>
-      <li><strong>CV Galfa Kreatif Indonesia</strong> – Stock Keeper (2019 – 2022)</li>
-    </ul>
-
-    <h2 class="text-xl font-semibold mt-6 mb-2">Dokumen Pendukung</h2>
-    <ul class="list-disc list-inside">
-      <li><a href="CV Iyus Nurdian N.pdf" class="text-blue-600 underline">Download CV Lengkap</a></li>
-    </ul>
-  </section>
-
       </ul>
     </section>
 
-    <section>
-      <h2>Proyek</h2>
-      <ul>
+    <section class="mt-6">
+      <h2 class="text-xl font-semibold mb-2">Pengalaman Kerja</h2>
+      <ul class="list-disc list-inside text-base space-y-2">
+        <li><strong>PT. Sumber Alfaria Trijaya Tbk</strong> – Crew Store (Juni 2024 – Juni 2025)</li>
+        <li><strong>PT. Mitra Pembayaran Elektronik</strong> – Collector (April 2023 – Mei 2023)</li>
+        <li><strong>PT. Alva Karya Perkasa</strong> – Office Boy (Agustus – Oktober 2022)</li>
+        <li><strong>CV Galfa Kreatif Indonesia</strong> – Stock Keeper (Juli 2019 – Juni 2022)</li>
+      </ul>
+    </section>
+
+    <section class="mt-6">
+      <h2 class="text-xl font-semibold mb-2">Kontak</h2>
+      <ul class="list-disc list-inside text-base space-y-1">
+        <li>Email: <a href="mailto:iyusnurdiannugraha@gmail.com" class="underline">iyusnurdiannugraha@gmail.com</a></li>
+        <li>No. HP: 0823 2000 7618</li>
+        <li>Alamat: Kp. Pasirteureup, Ds. Karangsari, Kec. Leuwigoong, Garut</li>
+      </ul>
+    </section>
+
+    <section class="mt-6">
+      <h2 class="text-xl font-semibold mb-2">Sertifikat</h2>
+      <ul class="list-disc list-inside text-base">
         <li>
-          <strong>Live Streamer,Web Developer:</strong>
-          <a href="https://www.youtube.com/@Gameriyus" target="_blank">Gameriyus Youtube</a>
+          Google IT Support Professional Certificate (Juni 2025) –
+          <a href="https://www.coursera.org/account/accomplishments/professional-cert/J5UJKMWNXXQT" target="_blank" class="underline">Lihat Sertifikat</a>
         </li>
       </ul>
     </section>
 
-    <section>
-      <h2>Kontak</h2>
-      <p>Email: <a href="mailto:iyusnurdiannugraha@gmail.com">iyusnurdiannugraha@gmail.com</a></p>
-      <li>No. HP: 0823 2000 7618</li>
-      <li>Alamat: Kp. Pasirteureup, Ds. Karangsari, Kec. Leuwigoong, Garut</li>
-      <p>GitHub: <a href="https://github.com/iyusnurdiannugraha" target="_blank">iyusnurdiannugraha</a></p>
+    <section class="mt-6">
+      <h2 class="text-xl font-semibold mb-2">Dokumen Pendukung</h2>
+      <ul class="list-disc list-inside text-base">
+        <li><a href="CV Iyus Nurdian N (new).pdf" class="underline">Download CV Lengkap</a></li>
+      </ul>
     </section>
+
+    <!-- Mini Game: Snake Nokia -->
+    <section class="mt-10 bg-white shadow p-4 rounded dark:bg-gray-800">
+      <h2 class="text-xl font-semibold mb-2">🎮Ular Jadoel</h2>
+      <p class="mb-2 text-base">Gunakan tombol panah pada keyboard atau klik tombol panah di bawah untuk menggerakkan ular. Jangan sampai menabrak diri sendiri!</p>
+      <div class="flex justify-center mb-4">
+        <canvas id="snakeGame" width="300" height="300" class="border border-gray-500 dark:border-gray-800 rounded"></canvas>
+      </div>
+      <div class="flex justify-center gap-4">
+        <button id="upBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">↑</button>
+      </div>
+      <div class="flex justify-center gap-4 mt-2">
+        <button id="leftBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">←</button>
+        <button id="downBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">↓</button>
+        <button id="rightBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">→</button>
+      </div>
+      <div class="flex justify-center mt-4">
+        <button id="restartBtn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded">Restart Game</button>
+      </div>
+
+      <!-- Nama dan Komentar -->
+      <section class="mt-6">
+        <h2 class="text-lg font-semibold mb-2">Masukkan Nama & Komentar</h2>
+        <input id="playerName" class="mb-2 p-2 border rounded w-full" type="text" placeholder="Nama Anda" />
+        <textarea id="playerComment" class="mb-2 p-2 border rounded w-full" placeholder="Komentar Anda"></textarea>
+        <button id="saveScoreBtn" class="bg-blue-600 text-white font-bold py-2 px-4 rounded w-full" style="display:none;">Simpan Skor</button>
+      </section>
+
+      <!-- Top Skor -->
+      <section class="mt-6">
+        <h2 class="text-lg font-semibold mb-2">Top 3 Skor Tertinggi</h2>
+        <div id="topScores" class="space-y-2"></div>
+      </section>
+    </section>
+
   </main>
 
-  <footer>
-    <p>© 2025 Iyus Nurdian Nugraha</p>
+  <!-- Footer -->
+  <footer class="bg-gray-200 text-center p-4 mt-10 w-full dark:bg-gray-900 dark:text-gray-400">
+    <p class="text-sm">&copy; 2025 Iyus Nurdian Nugraha</p>
   </footer>
+
+  <!-- Game Script -->
+  <script>
+    const canvas = document.getElementById("snakeGame");
+    const ctx = canvas.getContext("2d");
+
+    const gridSize = 20;
+    const tileCount = canvas.width / gridSize;
+    let snake;
+    let food;
+    let dx;
+    let dy;
+    let gameOver;
+    let gameLoopId;
+    let playerScore = 0;
+
+    function placeFood() {
+      food = {
+        x: Math.floor(Math.random() * tileCount),
+        y: Math.floor(Math.random() * tileCount),
+      };
+      while (snake.some(part => part.x === food.x && part.y === food.y)) {
+        food = {
+          x: Math.floor(Math.random() * tileCount),
+          y: Math.floor(Math.random() * tileCount),
+        };
+      }
+    }
+
+    function initGame() {
+      snake = [{ x: 10, y: 10 }];
+      placeFood();
+      dx = 1;
+      dy = 0;
+      gameOver = false;
+      playerScore = 0;
+      if (gameLoopId) clearTimeout(gameLoopId);
+      gameLoopId = setTimeout(gameLoop, 150);
+    }
+
+    function drawGame() {
+      // Background
+      ctx.fillStyle = document.body.classList.contains('dark') ? "#111827" : "#f3f4f6"; // dark or light bg
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Food
+      ctx.fillStyle = "#f59e0b";
+      ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
+
+      // Snake body
+      ctx.fillStyle = "#2563eb";
+      for (let i = 1; i < snake.length; i++) {
+        const part = snake[i];
+        ctx.fillRect(part.x * gridSize, part.y * gridSize, gridSize - 2, gridSize - 2);
+      }
+
+      // Snake head - beda warna
+      const head = snake[0];
+      ctx.fillStyle = "#1d4ed8"; // lebih gelap biru
+      ctx.fillRect(head.x * gridSize, head.y * gridSize, gridSize - 2, gridSize - 2);
+    }
+
+    function gameLoop() {
+      if (gameOver) return;
+
+      const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+
+      // Tabrakan dinding
+      if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) {
+        return endGame();
+      }
+
+      // Tabrakan tubuh sendiri
+      for (let part of snake) {
+        if (head.x === part.x && head.y === part.y) {
+          return endGame();
+        }
+      }
+
+      snake.unshift(head);
+
+      // Makan makanan
+      if (head.x === food.x && head.y === food.y) {
+        placeFood();
+        playerScore++;
+      } else {
+        snake.pop();
+      }
+
+      drawGame();
+
+      gameLoopId = setTimeout(gameLoop, 150);
+    }
+
+    function endGame() {
+      gameOver = true;
+      alert("💀 Game Over! Klik Restart Game untuk main lagi.");
+      document.getElementById('saveScoreBtn').style.display = 'block';
+    }
+
+    // Kontrol keyboard
+    document.addEventListener("keydown", (e) => {
+      if (gameOver) return;
+
+      switch (e.key) {
+        case "ArrowUp":
+          if (dy === 0) { dx = 0; dy = -1; }
+          break;
+        case "ArrowDown":
+          if (dy === 0) { dx = 0; dy = 1; }
+          break;
+        case "ArrowLeft":
+          if (dx === 0) { dx = -1; dy = 0; }
+          break;
+        case "ArrowRight":
+          if (dx === 0) { dx = 1; dy = 0; }
+          break;
+      }
+    });
+
+    // Tombol panah klik
+    document.getElementById("upBtn").addEventListener("click", () => {
+      if (gameOver) return;
+      if (dy === 0) { dx = 0; dy = -1; }
+    });
+    document.getElementById("downBtn").addEventListener("click", () => {
+      if (gameOver) return;
+      if (dy === 0) { dx = 0; dy = 1; }
+    });
+    document.getElementById("leftBtn").addEventListener("click", () => {
+      if (gameOver) return;
+      if (dx === 0) { dx = -1; dy = 0; }
+    });
+    document.getElementById("rightBtn").addEventListener("click", () => {
+      if (gameOver) return;
+      if (dx === 0) { dx = 1; dy = 0; }
+    });
+
+    // Tombol simpan skor
+    document.getElementById('saveScoreBtn').addEventListener('click', saveScore);
+
+    // Restart tombol
+    document.getElementById("restartBtn").addEventListener("click", () => {
+      initGame();
+      document.getElementById('saveScoreBtn').style.display = 'none';
+    });
+
+    // Simpan Skor
+    function saveScore() {
+      const name = document.getElementById("playerName").value;
+      const comment = document.getElementById("playerComment").value;
+
+      if (name && comment) {
+        const newScore = { name, score: playerScore, comment };
+        let topScores = JSON.parse(localStorage.getItem("topScores")) || [];
+
+        topScores.push(newScore);
+        topScores = topScores.sort((a, b) => b.score - a.score).slice(0, 3);
+        localStorage.setItem("topScores", JSON.stringify(topScores));
+        displayTopScores();
+      }
+    }
+
+    function displayTopScores() {
+      const topScores = JSON.parse(localStorage.getItem("topScores")) || [];
+      const topScoresContainer = document.getElementById("topScores");
+      topScoresContainer.innerHTML = "";
+
+      topScores.forEach((score, index) => {
+        const scoreElement = document.createElement("div");
+        scoreElement.classList.add("p-2", "bg-gray-100", "rounded", "mb-2");
+        scoreElement.innerHTML = `<strong>${index + 1}. ${score.name}</strong> - ${score.score} Poin<br><em>"${score.comment}"</em>`;
+        topScoresContainer.appendChild(scoreElement);
+      });
+    }
+
+    // Toggle dark mode
+    const darkModeToggle = document.getElementById("darkModeToggle");
+    darkModeToggle.addEventListener("change", () => {
+      document.body.classList.toggle("dark");
+      drawGame(); // redraw game bg agar sesuai mode
+    });
+
+    // Inisialisasi game awal
+    initGame();
+    displayTopScores();
+  </script>
 </body>
 </html>
