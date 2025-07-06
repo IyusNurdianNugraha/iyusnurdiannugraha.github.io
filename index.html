@@ -7,49 +7,60 @@
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
   <style>
     body.dark {
-      background-color: #1f2937; /* bg-gray-800 */
-      color: #d1d5db; /* text-gray-300 */
+      background-color: #1f2937;
+      color: #d1d5db;
     }
     body.dark header {
-      background-color: #111827; /* bg-gray-900 */
-      color: #e5e7eb; /* text-gray-200 */
+      background-color: #111827;
+      color: #e5e7eb;
     }
     body.dark footer {
-      background-color: #111827; /* bg-gray-900 */
-      color: #9ca3af; /* text-gray-400 */
+      background-color: #111827;
+      color: #9ca3af;
     }
     body.dark a {
-      color: #60a5fa; /* text-blue-400 */
+      color: #60a5fa;
     }
     body.dark a:hover {
       text-decoration: underline;
     }
     body.dark canvas {
-      border-color: #374151; /* gray-700 */
+      border-color: #374151;
       background-color: #111827;
+    }
+    .toggle-checkbox {
+      width: 1.25rem;
+      height: 1.25rem;
+      accent-color: #2563eb;
+    }
+    /* Smooth transitions for dark mode */
+    body, header, footer, canvas {
+      transition: background-color 0.3s, color 0.3s;
     }
   </style>
 </head>
-<body class="bg-gray-50 font-sans leading-relaxed">
+<body class="bg-gray-50 font-sans leading-relaxed min-h-screen flex flex-col">
 
   <!-- Header -->
   <header class="bg-gray-800 text-white p-6 shadow-md dark:bg-gray-900">
-  <div class="container mx-auto flex flex-col items-center text-center">
-    <h1 class="text-3xl font-bold">Iyus Nurdian Nugraha</h1>
-    <p class="text-sm">IT Support • Junior Programmer • Warehouse • Pelayanan</p>
-    <div class="flex flex-wrap justify-center gap-4 mt-2 text-sm">
-      <a href="https://www.facebook.com/iyusnurdiannugraha" target="_blank" class="hover:underline">Facebook</a>
-      <a href="https://www.instagram.com/iyusnurdiannugraha" target="_blank" class="hover:underline">Instagram</a>
-      <a href="https://www.tiktok.com/@iyusnurdiannugrahaa" target="_blank" class="hover:underline">Tiktok</a>
+    <div class="container mx-auto flex flex-col items-center text-center">
+      <h1 class="text-3xl font-bold">Iyus Nurdian Nugraha</h1>
+      <p class="text-sm">IT Support • Junior Programmer • Warehouse • Pelayanan</p>
+      <div class="flex flex-wrap justify-center gap-4 mt-2 text-sm">
+        <a href="https://www.linkedin.com/in/iyus-nurdian-nugraha-00b0581a2" target="_blank" rel="noopener" class="hover:underline">LinkedIn</a>
+        <a href="https://www.facebook.com/iyusnurdiannugraha" target="_blank" rel="noopener" class="hover:underline">Facebook</a>
+        <a href="https://www.instagram.com/iyusnurdiannugraha" target="_blank" rel="noopener" class="hover:underline">Instagram</a>
+        <a href="https://www.tiktok.com/@iyusnurdiannugrahaa" target="_blank" rel="noopener" class="hover:underline">Tiktok</a>
+      </div>
     </div>
-  </div>
-  <div class="fixed top-4 right-4 flex items-center gap-2 bg-gray-800 dark:bg-gray-900 p-2 rounded">
-    <label for="darkModeToggle" class="cursor-pointer select-none text-white text-sm">Dark Mode</label>
-    <input type="checkbox" id="darkModeToggle" class="toggle-checkbox" />
-  </div>
-</header>
+    <div class="fixed top-4 right-4 flex items-center gap-2 bg-gray-800 dark:bg-gray-900 p-2 rounded z-50 shadow">
+      <label for="darkModeToggle" class="cursor-pointer select-none text-white text-sm">Dark Mode</label>
+      <input type="checkbox" id="darkModeToggle" class="toggle-checkbox" aria-label="Mode Gelap" />
+    </div>
+  </header>
+  
   <!-- Konten -->
-  <main class="px-4 py-6 max-w-xl mx-auto">
+  <main class="px-4 py-6 max-w-xl mx-auto flex-1 w-full">
     <section>
       <h2 class="text-xl font-semibold mb-2">Tentang Saya</h2>
       <p class="mb-4 text-base">Saya memiliki motivasi, dedikasi, dan loyalitas tinggi dalam bekerja. Teliti, disiplin, serta mampu berkomunikasi secara efektif dalam tim maupun dengan pelanggan.</p>
@@ -64,8 +75,8 @@
       <h2 class="text-xl font-semibold mb-2">Kemampuan</h2>
       <ul class="list-disc list-inside text-base space-y-1">
         <li>HTML, CSS, JavaScript</li>
-        <li>Komputer (Hardware Software & Jaringan)</li>
-        <li>Pergudangan Warehouse</li>
+        <li>Komputer (Hardware, Software & Jaringan)</li>
+        <li>Pergudangan (Warehouse)</li>
         <li>Pelayanan</li>
       </ul>
     </section>
@@ -73,10 +84,10 @@
     <section class="mt-6">
       <h2 class="text-xl font-semibold mb-2">Pengalaman Kerja</h2>
       <ul class="list-disc list-inside text-base space-y-2">
-        <li><strong>PT. Sumber Alfaria Trijaya Tbk</strong> – Crew Store (Juni 2024 – Juni 2025)</li>
-        <li><strong>PT. Mitra Pembayaran Elektronik</strong> – Collector (April 2023 – Mei 2023)</li>
-        <li><strong>PT. Alva Karya Perkasa</strong> – Office Boy (Agustus – Oktober 2022)</li>
-        <li><strong>CV Galfa Kreatif Indonesia</strong> – Stock Keeper (Juli 2019 – Juni 2022)</li>
+        <li><strong>PT. Sumber Alfaria Trijaya Tbk</strong> – Crew Store <span class="italic">(Juni 2024 – Juni 2025)</span></li>
+        <li><strong>PT. Mitra Pembayaran Elektronik</strong> – Collector <span class="italic">(April 2023 – Mei 2023)</span></li>
+        <li><strong>PT. Alva Karya Perkasa</strong> – Office Boy <span class="italic">(Agustus – Oktober 2022)</span></li>
+        <li><strong>CV Galfa Kreatif Indonesia</strong> – Stock Keeper <span class="italic">(Juli 2019 – Juni 2022)</span></li>
       </ul>
     </section>
 
@@ -84,7 +95,7 @@
       <h2 class="text-xl font-semibold mb-2">Kontak</h2>
       <ul class="list-disc list-inside text-base space-y-1">
         <li>Email: <a href="mailto:iyusnurdiannugraha@gmail.com" class="underline">iyusnurdiannugraha@gmail.com</a></li>
-        <li>No. HP: 0823 2000 7618</li>
+        <li>No. HP: <a href="https://wa.me/6282320007618" class="underline" target="_blank" rel="noopener">0823 2000 7618</a></li>
         <li>Alamat: Kp. Pasirteureup, Ds. Karangsari, Kec. Leuwigoong, Garut</li>
       </ul>
     </section>
@@ -93,8 +104,8 @@
       <h2 class="text-xl font-semibold mb-2">Sertifikat</h2>
       <ul class="list-disc list-inside text-base">
         <li>
-          Google IT Support Professional Certificate (Juni 2025) –
-          <a href="https://www.coursera.org/account/accomplishments/professional-cert/J5UJKMWNXXQT" target="_blank" class="underline">Lihat Sertifikat</a>
+          Google IT Support Professional Certificate <span class="italic">(Juni 2025)</span> –
+          <a href="https://www.coursera.org/account/accomplishments/professional-cert/J5UJKMWNXXQT" target="_blank" rel="noopener" class="underline">Lihat Sertifikat</a>
         </li>
       </ul>
     </section>
@@ -102,50 +113,45 @@
     <section class="mt-6">
       <h2 class="text-xl font-semibold mb-2">Dokumen Pendukung</h2>
       <ul class="list-disc list-inside text-base">
-        <li><a href="CV Iyus Nurdian N (new).pdf" class="underline">Download CV Lengkap</a></li>
+        <li><a href="CV Iyus Nurdian N (new).pdf" class="underline" download>Download CV Lengkap</a></li>
       </ul>
     </section>
 
     <!-- Mini Game: Snake Nokia -->
     <section class="mt-10 bg-white shadow p-4 rounded dark:bg-gray-800">
-      <h2 class="text-xl font-semibold mb-2">🎮Ular Jadoel</h2>
+      <h2 class="text-xl font-semibold mb-2">🎮 Ular Jadoel</h2>
       <p class="mb-2 text-base">Gunakan tombol panah pada keyboard atau klik tombol panah di bawah untuk menggerakkan ular. Jangan sampai menabrak diri sendiri!</p>
       <div class="flex justify-center mb-4">
-        <canvas id="snakeGame" width="300" height="300" class="border border-gray-500 dark:border-gray-800 rounded"></canvas>
+        <canvas id="snakeGame" width="300" height="300" class="border border-gray-500 dark:border-gray-800 rounded" tabindex="0" aria-label="Area Permainan Ular"></canvas>
       </div>
       <div class="flex justify-center gap-4">
-        <button id="upBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">↑</button>
+        <button id="upBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" aria-label="Atas">↑</button>
       </div>
       <div class="flex justify-center gap-4 mt-2">
-        <button id="leftBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">←</button>
-        <button id="downBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">↓</button>
-        <button id="rightBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">→</button>
+        <button id="leftBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" aria-label="Kiri">←</button>
+        <button id="downBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" aria-label="Bawah">↓</button>
+        <button id="rightBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" aria-label="Kanan">→</button>
       </div>
       <div class="flex justify-center mt-4">
-        <button id="restartBtn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded">Restart Game</button>
+        <button id="restartBtn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded" aria-label="Mulai Ulang Game">Restart Game</button>
       </div>
     </section>
-
   </main>
 
   <!-- Footer -->
   <footer class="bg-gray-200 text-center p-4 mt-10 w-full dark:bg-gray-900 dark:text-gray-400">
-    <p class="text-sm">&copy; 2025 Iyus Nurdian Nugraha</p>
+    <p class="text-sm">&copy; 2025 Iyus Nurdian Nugraha. Dibuat dengan ❤️.</p>
   </footer>
 
   <!-- Game Script -->
   <script>
+    // --- Game Logic ---
     const canvas = document.getElementById("snakeGame");
     const ctx = canvas.getContext("2d");
 
     const gridSize = 20;
     const tileCount = canvas.width / gridSize;
-    let snake;
-    let food;
-    let dx;
-    let dy;
-    let gameOver;
-    let gameLoopId;
+    let snake, food, dx, dy, gameOver, gameLoopId, score;
 
     function placeFood() {
       food = {
@@ -166,13 +172,14 @@
       dx = 1;
       dy = 0;
       gameOver = false;
+      score = 0;
       if (gameLoopId) clearTimeout(gameLoopId);
+      drawGame();
       gameLoopId = setTimeout(gameLoop, 150);
     }
 
     function drawGame() {
-      // Background
-      ctx.fillStyle = document.body.classList.contains('dark') ? "#111827" : "#f3f4f6"; // dark or light bg
+      ctx.fillStyle = document.body.classList.contains('dark') ? "#111827" : "#f3f4f6";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       // Food
@@ -186,10 +193,16 @@
         ctx.fillRect(part.x * gridSize, part.y * gridSize, gridSize - 2, gridSize - 2);
       }
 
-      // Snake head - beda warna
+      // Snake head
       const head = snake[0];
-      ctx.fillStyle = "#1d4ed8"; // lebih gelap biru
+      ctx.fillStyle = "#1d4ed8";
       ctx.fillRect(head.x * gridSize, head.y * gridSize, gridSize - 2, gridSize - 2);
+
+      // Skor
+      ctx.font = "16px Arial";
+      ctx.fillStyle = document.body.classList.contains('dark') ? "#f3f4f6" : "#1f2937";
+      ctx.textAlign = "left";
+      ctx.fillText("Skor: " + score, 8, 24);
     }
 
     function gameLoop() {
@@ -197,12 +210,12 @@
 
       const head = { x: snake[0].x + dx, y: snake[0].y + dy };
 
-      // Tabrakan dinding
+      // Collision: Wall
       if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) {
         return endGame();
       }
 
-      // Tabrakan tubuh sendiri
+      // Collision: Self
       for (let part of snake) {
         if (head.x === part.x && head.y === part.y) {
           return endGame();
@@ -211,27 +224,28 @@
 
       snake.unshift(head);
 
-      // Makan makanan
+      // Eat food
       if (head.x === food.x && head.y === food.y) {
+        score++;
         placeFood();
       } else {
         snake.pop();
       }
 
       drawGame();
-
-      gameLoopId = setTimeout(gameLoop, 150);
+      gameLoopId = setTimeout(gameLoop, Math.max(70, 150 - score * 5));
     }
 
     function endGame() {
       gameOver = true;
-      alert("💀 Game Over! Klik Restart Game untuk main lagi.");
+      setTimeout(() => {
+        alert("💀 Game Over! Skor: " + score + ". Klik Restart Game untuk main lagi.");
+      }, 100);
     }
 
-    // Kontrol keyboard
+    // Keyboard controls
     document.addEventListener("keydown", (e) => {
       if (gameOver) return;
-
       switch (e.key) {
         case "ArrowUp":
           if (dy === 0) { dx = 0; dy = -1; }
@@ -248,37 +262,54 @@
       }
     });
 
-    // Tombol panah klik
+    // Touch/Click controls
     document.getElementById("upBtn").addEventListener("click", () => {
       if (gameOver) return;
       if (dy === 0) { dx = 0; dy = -1; }
+      canvas.focus();
     });
     document.getElementById("downBtn").addEventListener("click", () => {
       if (gameOver) return;
       if (dy === 0) { dx = 0; dy = 1; }
+      canvas.focus();
     });
     document.getElementById("leftBtn").addEventListener("click", () => {
       if (gameOver) return;
       if (dx === 0) { dx = -1; dy = 0; }
+      canvas.focus();
     });
     document.getElementById("rightBtn").addEventListener("click", () => {
       if (gameOver) return;
       if (dx === 0) { dx = 1; dy = 0; }
+      canvas.focus();
     });
 
-    // Restart tombol
     document.getElementById("restartBtn").addEventListener("click", () => {
       initGame();
+      canvas.focus();
     });
 
-    // Toggle dark mode
+    // Dark mode toggle with persistence
     const darkModeToggle = document.getElementById("darkModeToggle");
+    function setDarkMode(enabled) {
+      document.body.classList.toggle("dark", enabled);
+      darkModeToggle.checked = enabled;
+      drawGame();
+      localStorage.setItem('darkMode', enabled ? '1' : '0');
+    }
     darkModeToggle.addEventListener("change", () => {
-      document.body.classList.toggle("dark");
-      drawGame(); // redraw game bg agar sesuai mode
+      setDarkMode(darkModeToggle.checked);
     });
+    // On load: set mode
+    (() => {
+      const stored = localStorage.getItem('darkMode');
+      setDarkMode(stored === '1' || (stored === null && window.matchMedia('(prefers-color-scheme: dark)').matches));
+    })();
 
-    // Inisialisasi game awal
+    // Focus canvas for keyboard controls when clicked
+    canvas.addEventListener('click', () => canvas.focus());
+
+    // Start game
     initGame();
   </script>
 </body>
