@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>POS Gameriyus</title>
+  <style>
+    /* Base styles for responsiveness */
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      margin: 0;
+      background-color: #f4f4f4;
+      display: flex; /* Use flex for body to center content vertically/horizontally if needed */
+      justify-content: center;
+      align-items: flex-start; /* Align content to the top by default */
+      min-height: 100vh; /* Ensure body takes full viewport height */
+      box-sizing: border-box; /* Include padding in element's total width and height */
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* Center items horizontally within the container */
+      gap: 20px;
+      width: 100%; /* Allow container to take full width of body padding */
+      max-width: 700px; /* Max width for the entire application layout for larger screens */
+      box-sizing: border-box;
+    }
+
+    /* General styling for main sections (forms, receipt, history) */
+    .struk, .form-input, .item-master, .pengaturan, .history-page, #pembayaranPage, .payment-controls,
+    #editStrukButtonContainer, .storage-sub-page, .storage-nav { /* Added new storage related classes/ids */
+      width: 100%; /* Take full width within their parent container */
+      max-width: 350px; /* Max width for individual content blocks (like a physical receipt) */
+      margin: 0 auto; /* Center individual blocks */
+      background: white;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      display: flex; /* Use flex for internal layout */
+      flex-direction: column; /* Stack children vertically */
+      gap: 12px; /* Spacing between elements */
+      box-sizing: border-box;
+    }
+    /* Specific styling for storage sub-pages to allow wider tables */
+    #masterBarang, #barangMasuk, #barangKeluar {
+        max-width: 700px; /* Allow wider for inventory tables */
+    }
+
+
+    .struk {
+      border: 1px solid #000;
+      box-shadow: none;
+      padding: 15px;
+      gap: 5px; /* Tighter spacing for receipt content */
+      margin-top: 0; /* No top margin as it's part of pembayaranPage */
+    }
+
+    .struk h2 {
+      text-align: center;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .struk table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    .struk table th, .struk table td {
+      text-align: left;
+      padding: 6px 0; /* More padding for readability */
+      border-bottom: 1px dashed #ddd; /* Dotted line for items */
+      font-size: 0.95em; /* Slightly smaller font for table content */
+    }
+    .struk table th:last-child, .struk table td:last-child {
+      text-align: right;
+    }
+    .struk table th:nth-child(2), .struk table td:nth-child(2) {
+        text-align: center; /* Center quantity */
+        width: 50px; /* Fixed width for quantity column */
+    }
+
+    .struk .total, .struk .bayar-kembali {
+      font-weight: bold;
+      text-align: right;
+      margin-top: 8px;
+      font-size: 1.1em;
+    }
+    .struk .bayar-kembali {
+      font-size: 1em;
+      font-weight: normal;
+    }
+
+    .struk .catatan {
+      font-size: 0.8em;
+      margin-top: 15px;
+      text-align: center;
+      color: #777;
+    }
+
+    /* Input and Select elements styling */
+    input, select {
+      padding: 10px;
+      font-size: 1em;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      width: calc(100% - 22px); /* Account for padding and border */
+      box-sizing: border-box; /* Include padding in width calculation */
+    }
+
+    button {
+      padding: 10px 15px;
+      font-size: 1em;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      background-color: var(--warna-tombol, #4CAF50);
+      color: white;
+      transition: background-color 0.2s ease;
+      box-sizing: border-box;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .button-group {
+      display: flex;
+      flex-wrap: wrap; /* Allow buttons to wrap to the next line */
+      gap: 10px;
+      justify-content: center;
+      margin-top: 15px;
+    }
+    .button-group button {
+      flex-grow: 1; /* Allow buttons to grow and fill available space */
+      min-width: 120px; /* Ensure minimum width for readability */
+    }
+
+
+    .no-print {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    /* Quantity controls for item input */
+    .quantity-controls {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+    .quantity-controls input {
+        flex-grow: 1;
+        text-align: center;
+        width: auto; /* Override general input width for quantity */
+    }
+    .quantity-controls button {
+        width: 40px;
+        flex-shrink: 0;
+        padding: 5px;
+    }
+
+    /* Styling for edit mode on receipt table */
+    .struk table tbody.edit-mode tr {
+      cursor: pointer;
+      background-color: #f0f0f0; /* Highlight on hover */
+    }
+    .struk table tbody.edit-mode tr:hover {
+      background-color: #e0e0e0;
+    }
+
+    /* History Page specific styles */
+    .history-page h3 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
+    .history-item {
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 15px;
+        margin-bottom: 10px;
+        background-color: #fdfdfd;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .history-item p {
+        margin: 5px 0;
+        font-size: 0.95em;
+    }
+    .history-item ul {
+        list-style: none;
+        padding: 0;
+        margin: 10px 0 0 0;
+        border-top: 1px dashed #eee;
+        padding-top: 10px;
+    }
+    .history-item ul li {
+        padding: 3px 0;
+        font-size: 0.9em;
+        color: #555;
+    }
+    .history-item .history-total {
+        font-weight: bold;
+        text-align: right;
+        margin-top: 10px;
+        font-size: 1em;
+        color: #333;
+    }
+    .history-item .history-actions {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 10px;
+    }
+    .history-item .history-actions button {
+        background-color: #dc3545; /* Red for delete */
+        padding: 5px 10px;
+        font-size: 0.9em;
+    }
+
+    /* Storage Page Specific Styles */
+    .storage-nav {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 20px; /* Space below nav buttons */
+        width: 100%;
+        max-width: 700px; /* Match container max-width */
+        padding: 0; /* Remove padding from .storage-nav itself */
+        background-color: transparent; /* No background for nav bar */
+        border: none; /* No border for nav bar */
+        box-shadow: none; /* No shadow for nav bar */
+    }
+    .storage-nav button {
+        flex-grow: 1;
+        background-color: #6c757d;
+    }
+    .storage-nav button:hover {
+        background-color: #5a6268;
+    }
+    .storage-sub-page table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+    .storage-sub-page table th, .storage-sub-page table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+        font-size: 0.9em;
+    }
+    .storage-sub-page table th {
+        background-color: #f2f2f2;
+    }
+    .storage-sub-page .form-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    @media (min-width: 480px) {
+        .storage-sub-page .form-grid {
+            grid-template-columns: 1fr 1fr; /* Two columns on wider small screens */
+        }
+    }
+    .storage-sub-page .full-width {
+        grid-column: 1 / -1; /* Span all columns */
+    }
+    .storage-sub-page .actions {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+    }
+
+
+    /* Custom Message Box Styles (Pop-up dialogs) */
+    .message-box-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+    }
+    .message-box {
+      background-color: white;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      max-width: 300px;
+    }
+    .message-box button {
+      margin-top: 15px;
+      padding: 8px 20px;
+    }
+    .message-box .button-group { /* Style for buttons inside the message box */
+        margin-top: 15px;
+        gap: 10px;
+    }
+    .message-box .button-group button {
+        background-color: #007bff; /* Different color for dialog buttons */
+    }
+    .message-box .button-group button:hover {
+        background-color: #0056b3;
+    }
+
+    /* Print media query: Hide everything except the receipt when printing */
+    @media print {
+      body > *:not(#struk) {
+        display: none !important;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: white;
+      }
+      .struk {
+          max-width: none; /* Allow struk to use full print width */
+          width: auto;
+          box-shadow: none;
+          border: none;
+          padding: 0;
+          margin: 0;
+      }
+    }
+
+    /* Media Query for smaller screens (e.g., mobile landscape) */
+    @media (max-width: 600px) {
+        body {
+            padding: 10px; /* Reduce padding on smaller screens */
+        }
+        .container {
+            gap: 10px; /* Reduce gap between sections */
+        }
+        .struk, .form-input, .item-master, .pengaturan, .history-page, #pembayaranPage, .payment-controls,
+        #editStrukButtonContainer, .storage-sub-page, .storage-nav {
+            padding: 15px; /* Reduce padding for inner blocks */
+            border-radius: 4px; /* Slightly less rounded corners */
+            gap: 8px; /* Tighter spacing inside blocks */
+        }
+        button {
+            padding: 8px 12px; /* Smaller button padding */
+            font-size: 0.9em; /* Smaller font for buttons */
+        }
+        input, select {
+            padding: 8px; /* Smaller input padding */
+            font-size: 0.9em; /* Smaller font for inputs */
+        }
+        .button-group button {
+            min-width: 100px; /* Adjust min-width for smaller buttons */
+        }
+        .struk table th, .struk table td {
+            font-size: 0.85em; /* Smaller font for receipt table */
+        }
+        .struk .catatan {
+            font-size: 0.75em;
+        }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="no-print button-group">
+    <button onclick="toggleSection('pembayaranPage')">💰 Pembayaran</button>
+    <button onclick="togglePengaturan()">⚙️ Pengaturan</button>
+    <button onclick="toggleItemMaster()">📦 Daftar Produk</button>
+    <button onclick="toggleStorage()">📊 Storage</button>
+    <button onclick="toggleHistory()">📜 Riwayat Pesanan</button>
+  </div>
+
+  <!-- Moved Storage Sub-navigation outside #storagePage -->
+  <div class="storage-nav button-group no-print" id="storageSubNav" style="display: none;">
+    <button onclick="toggleStorageSubSection('masterBarang')">Master Barang</button>
+    <button onclick="toggleStorageSubSection('barangMasuk')">Barang Masuk</button>
+    <button onclick="toggleStorageSubSection('barangKeluar')">Barang Keluar</button>
+  </div>
+
+  <div class="pengaturan no-print" id="pengaturan" style="display: none;">
+    <input type="text" id="namaTokoInput" placeholder="Nama Toko">
+    <input type="color" id="warnaTombolInput" value="#4CAF50">
+    <button onclick="simpanPengaturan()">Simpan Pengaturan</button>
+  </div>
+
+  <div class="item-master no-print" id="itemMaster" style="display: none;">
+    <h3>Daftar Produk untuk Dijual</h3>
+    <p>Kelola produk yang tersedia untuk transaksi POS.</p>
+    <select id="itemListSellable"></select>
+    <button onclick="hapusItemSellable()">Hapus Produk</button>
+    <hr style="margin: 15px 0;">
+    <input type="text" id="kodeProdukBaru" placeholder="Kode/Barcode">
+    <input type="text" id="namaProdukBaru" placeholder="Nama Produk">
+    <input type="number" id="hargaJualBaru" placeholder="Harga Jual">
+    <button onclick="tambahItemSellable()">Tambah Produk ke Daftar Jual</button>
+  </div>
+
+  <div class="history-page no-print" id="historyPage" style="display: none;">
+    <h3>Riwayat Pesanan</h3>
+    <div id="historyList">
+      <!-- History items will be loaded here -->
+      <p style="text-align: center; color: #777;">Belum ada riwayat pesanan.</p>
+    </div>
+  </div>
+
+  <!-- Storage Sub-pages (now directly children of container) -->
+  <div id="masterBarang" class="storage-sub-page no-print" style="display: none;">
+    <h4>Daftar Inventaris Utama</h4>
+    <div class="form-grid">
+      <input type="text" id="masterBarangId" placeholder="ID Barang">
+      <input type="text" id="masterBarangNama" placeholder="Nama Barang">
+      <input type="number" id="masterBarangStockAwal" placeholder="Stok Awal">
+      <input type="number" id="masterBarangHargaSatuanBeli" placeholder="Harga Beli Satuan">
+      <input type="date" id="masterBarangExpiredDate" class="full-width">
+      <div class="actions full-width">
+        <button onclick="addOrUpdateMasterBarang()">Tambah/Update Master</button>
+        <button onclick="clearMasterBarangForm()">Bersihkan</button>
+      </div>
+    </div>
+    <table style="margin-top: 20px;">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nama</th>
+          <th>Stok Akhir</th>
+          <th>Harga Beli</th>
+          <th>Total Harga</th>
+          <th>Expired</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody id="masterBarangTableBody">
+        <!-- Master Barang list will be loaded here -->
+      </tbody>
+    </table>
+  </div>
+
+  <div id="barangMasuk" class="storage-sub-page no-print" style="display: none;">
+    <h4>Catat Barang Masuk</h4>
+    <div class="form-grid">
+      <select id="barangMasukProduk" class="full-width"></select>
+      <input type="number" id="barangMasukJumlah" placeholder="Jumlah Masuk" min="1">
+      <input type="date" id="barangMasukTanggal" class="full-width">
+      <div class="actions full-width">
+        <button onclick="addBarangMasuk()">Catat Barang Masuk</button>
+      </div>
+    </div>
+    <table style="margin-top: 20px;">
+      <thead>
+        <tr>
+          <th>Tanggal</th>
+          <th>Nama Barang</th>
+          <th>Jumlah</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody id="barangMasukTableBody">
+        <!-- Barang Masuk history will be loaded here -->
+      </tbody>
+    </table>
+  </div>
+
+  <div id="barangKeluar" class="storage-sub-page no-print" style="display: none;">
+    <h4>Catat Barang Keluar</h4>
+    <div class="form-grid">
+      <select id="barangKeluarProduk" class="full-width"></select>
+      <input type="number" id="barangKeluarJumlah" placeholder="Jumlah Keluar" min="1">
+      <input type="text" id="barangKeluarAlasan" placeholder="Alasan Keluar (contoh: rusak, internal)">
+      <input type="date" id="barangKeluarTanggal" class="full-width">
+      <div class="actions full-width">
+        <button onclick="addBarangKeluar()">Catat Barang Keluar</button>
+      </div>
+    </div>
+    <table style="margin-top: 20px;">
+      <thead>
+        <tr>
+          <th>Tanggal</th>
+          <th>Nama Barang</th>
+          <th>Jumlah</th>
+          <th>Alasan</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody id="barangKeluarTableBody">
+        <!-- Barang Keluar history will be loaded here -->
+      </tbody>
+    </table>
+  </div>
+  <!-- End Storage Sub-pages -->
+
+  <!-- Pembayaran Page container -->
+  <div id="pembayaranPage" class="no-print">
+    <div class="form-input" id="formInput">
+      <input type="text" id="namaItem" placeholder="Scan barcode atau ketik kode/nama item" autofocus oninput="isiOtomatisHarga()">
+      <input type="number" id="hargaItem" placeholder="Harga item">
+      <div class="quantity-controls">
+        <button onclick="decreaseQuantity()">-</button>
+        <input type="number" id="jumlahItem" placeholder="Jumlah beli" value="1" min="1">
+        <button onclick="increaseQuantity()">+</button>
+      </div>
+      <button onclick="addItemToReceipt()" id="tombolTambah">Tambah Item</button>
+    </div>
+
+    <div class="struk" id="struk">
+      <h2 id="namaToko">Gameriyus</h2>
+      <p><span id="tanggal"></span></p>
+      <p>Kode Struk: <span id="kodeStruk"></span></p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Jml</th>
+            <th style="text-align:right;">Harga</th>
+          </tr>
+        </thead>
+        <tbody id="daftar-item">
+          <!-- Daftar item akan muncul di sini -->
+        </tbody>
+      </table>
+
+      <p class="total">Total: <span id="total">Rp0</span></p>
+      <p class="bayar-kembali">Bayar: <span id="bayar">Rp0</span></p>
+      <p class="bayar-kembali">Kembali: <span id="kembali">Rp0</span></p>
+      <p class="catatan">Barang Yang Sudah Dibeli Tidak Bisa Di Kembalikan Karena Sudah Melewati Proses QC dan Stock Opname</p>
+    </div>
+
+    <!-- Moved Edit Struk button here -->
+    <div class="no-print button-group" id="editStrukButtonContainer">
+      <button onclick="toggleEditMode()" id="editStrukBtn">Edit Struk</button>
+    </div>
+
+    <!-- Payment controls and complete transaction button -->
+    <div class="payment-controls no-print" id="paymentControls">
+      <input type="number" id="jumlahBayarInput" placeholder="Jumlah Bayar" oninput="updateReceiptTotals()">
+      <button onclick="completeTransaction()" id="tombolSelesaikanTransaksi">Selesaikan Transaksi</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// Global variables
+let isEditMode = false;
+let currentReceiptItems = [];
+
+// Initialize history of generated codes and receipt history
+let generatedStrukCodes = JSON.parse(localStorage.getItem('generatedStrukCodes') || '[]');
+let receiptHistory = JSON.parse(localStorage.getItem('receiptHistory') || '[]');
+
+// Storage data
+let masterBarangList = JSON.parse(localStorage.getItem('masterBarangList') || '[]');
+let barangMasukHistory = JSON.parse(localStorage.getItem('barangMasukHistory') || '[]');
+let barangKeluarHistory = JSON.parse(localStorage.getItem('barangKeluarHistory') || '[]');
+
+// Options for date formatting
+const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+
+// --- Utility Functions ---
+
+// Function to generate a unique 6-digit alphanumeric code
+function generateUniqueStrukCode() {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let result = '';
+  let isUnique = false;
+
+  while (!isUnique) {
+    result = '';
+    for (let i = 0; i < 6; i++) {
+      result += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    // Check if the generated code already exists in history or current master barang IDs
+    if (!generatedStrukCodes.includes(result) && !masterBarangList.some(item => item.id === result)) {
+      isUnique = true;
+    }
+  }
+  generatedStrukCodes.push(result);
+  localStorage.setItem('generatedStrukCodes', JSON.stringify(generatedStrukCodes));
+  return result;
+}
+
+// Function to display custom messages instead of alert()
+function displayMessage(message) {
+  const existingMessageBox = document.querySelector('.message-box-overlay');
+  if (existingMessageBox) {
+    document.body.removeChild(existingMessageBox);
+  }
+
+  const overlay = document.createElement("div");
+  overlay.classList.add("message-box-overlay");
+
+  const messageBox = document.createElement("div");
+  messageBox.classList.add("message-box");
+  messageBox.textContent = message;
+
+  const closeButton = document.createElement("button");
+  closeButton.textContent = "OK";
+  closeButton.onclick = () => document.body.removeChild(overlay);
+  messageBox.appendChild(closeButton);
+  overlay.appendChild(messageBox);
+  document.body.appendChild(overlay);
+}
+
+// --- Navigation and Page Toggling ---
+
+// Universal function to toggle display of main sections
+function toggleSection(activeSectionId) {
+    const mainSections = ['pengaturan', 'itemMaster', 'historyPage', 'pembayaranPage', 'masterBarang', 'barangMasuk', 'barangKeluar']; // All top-level content divs
+    const storageSubNav = document.getElementById('storageSubNav');
+
+    mainSections.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.style.display = 'none'; // Hide all main sections by default
+        }
+    });
+
+    if (storageSubNav) {
+        storageSubNav.style.display = 'none'; // Always hide storage sub-nav by default
+    }
+
+    if (activeSectionId) {
+        const activeEl = document.getElementById(activeSectionId);
+        if (activeEl) {
+            activeEl.style.display = 'flex'; // Use flex for these containers
+            // Specific actions for each section when it becomes active
+            if (activeSectionId === 'itemMaster') {
+                loadItemSellable();
+            } else if (activeSectionId === 'historyPage') {
+                loadOrderHistory();
+            } else if (activeSectionId === 'storagePage') { // This case won't be hit directly anymore as storage is managed by sub-sections
+                // Instead, if the 'Storage' button is clicked, we'll show its sub-nav and default sub-page
+                if (storageSubNav) {
+                    storageSubNav.style.display = 'flex';
+                }
+                toggleStorageSubSection('masterBarang'); // Default to Master Barang
+            }
+            // For other sections like pembayaranPage, settings, history, they are just directly displayed.
+        }
+    }
+}
+
+// Function to toggle display of Storage sub-sections
+function toggleStorageSubSection(activeSubSectionId) {
+    const subSections = ['masterBarang', 'barangMasuk', 'barangKeluar'];
+
+    subSections.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.style.display = 'none'; // Hide all sub-sections by default
+        }
+    });
+
+    if (activeSubSectionId) {
+        const activeEl = document.getElementById(activeSubSectionId);
+        if (activeEl) {
+            activeEl.style.display = 'flex'; // Use flex for these containers
+            // Specific actions for each sub-section when it becomes active
+            if (activeSubSectionId === 'masterBarang') {
+                loadMasterBarang();
+                clearMasterBarangForm();
+            } else if (activeSubSectionId === 'barangMasuk') {
+                populateProductSelects('barangMasukProduk');
+                loadBarangMasukHistory();
+            } else if (activeSubSectionId === 'barangKeluar') {
+                populateProductSelects('barangKeluarProduk');
+                loadBarangKeluarHistory();
+            }
+        }
+    }
+}
+
+// This is now the entry point for the Storage main menu button
+function toggleStorage() {
+    toggleSection(null); // Hide all main content first
+    const storageSubNav = document.getElementById('storageSubNav');
+    if (storageSubNav) {
+        storageSubNav.style.display = 'flex'; // Show storage sub-navigation
+    }
+    toggleStorageSubSection('masterBarang'); // Show Master Barang by default when "Storage" is clicked
+}
+
+function togglePengaturan() {
+  toggleSection('pengaturan');
+}
+
+function toggleItemMaster() { // This is now 'Daftar Produk' for selling
+  toggleSection('itemMaster');
+}
+
+
+function toggleHistory() {
+  toggleSection('historyPage');
+}
+
+// --- Pembayaran Page Functions ---
+
+// Function to decrease quantity in POS input
+function decreaseQuantity() {
+  const jumlahInput = document.getElementById("jumlahItem");
+  let currentJumlah = parseInt(jumlahInput.value);
+  if (currentJumlah > 1) {
+    jumlahInput.value = currentJumlah - 1;
+    updateReceiptTotals();
+  }
+}
+
+// Function to increase quantity in POS input
+function increaseQuantity() {
+  const jumlahInput = document.getElementById("jumlahItem");
+  let currentJumlah = parseInt(jumlahInput.value);
+  jumlahInput.value = currentJumlah + 1;
+  updateReceiptTotals();
+}
+
+// Add item to current receipt
+function addItemToReceipt() {
+  const namaInput = document.getElementById("namaItem");
+  const hargaInput = document.getElementById("hargaItem");
+  const jumlah = parseInt(document.getElementById("jumlahItem").value);
+
+  const nama = namaInput.value.trim();
+  let harga = parseFloat(hargaInput.value);
+
+  if (!nama || isNaN(harga) || isNaN(jumlah) || jumlah <= 0) {
+    displayMessage("Harap lengkapi data item dengan benar!");
+    return;
+  }
+
+  // Find item in masterBarangList to ensure it exists and to get its selling price
+  const produkInMaster = masterBarangList.find(p => p.nama.toLowerCase() === nama.toLowerCase() || p.id === nama);
+
+  // If item is found in master barang, use its name for consistency and its selling price
+  const item = {
+    nama: produkInMaster ? produkInMaster.nama : nama, // Use master name if found
+    jumlah: jumlah,
+    harga: harga // This 'harga' is the selling price
+  };
+  currentReceiptItems.push(item);
+  renderReceiptItems();
+  updateReceiptTotals();
+  resetForm();
+}
+
+// Renders items from currentReceiptItems array to the receipt table
+function renderReceiptItems() {
+    const tbody = document.getElementById("daftar-item");
+    tbody.innerHTML = ""; // Clear existing items
+
+    currentReceiptItems.forEach((item, index) => {
+        const tr = document.createElement("tr");
+        tr.dataset.index = index; // Store index for editing
+        tr.innerHTML = `<td>${item.nama}</td><td>${item.jumlah}</td><td style="text-align:right;">Rp${(item.harga * item.jumlah).toLocaleString()}</td>`;
+        tbody.appendChild(tr);
+
+        if (isEditMode) {
+            tr.onclick = () => editItemFromStruk(tr);
+        }
+    });
+}
+
+// Auto-fill price based on item name/code from master barang
+function isiOtomatisHarga() {
+  const namaInput = document.getElementById("namaItem").value.trim();
+  const produk = masterBarangList.find(p => p.id === namaInput || p.nama.toLowerCase() === namaInput.toLowerCase());
+  if (produk) {
+    // Assuming 'hargaSatuan' in masterBarangList is the purchase price,
+    // you might have a separate 'hargaJual' property for POS.
+    // For now, let's just show a placeholder if no specific selling price.
+    // Or, if 'hargaSatuan' implies selling price, use that.
+    // For this example, let's assume masterBarangList.hargaSatuan * 1.2 is the selling price for auto-fill.
+    // IMPORTANT: In a real app, you'd define selling price explicitly in master data.
+    document.getElementById("hargaItem").value = (produk.hargaSatuan * 1.2).toFixed(0); // Example selling price
+  }
+}
+
+// Update receipt total, paid amount, and change
+function updateReceiptTotals() {
+    const totalEl = document.getElementById("total");
+    const bayarEl = document.getElementById("bayar");
+    const kembaliEl = document.getElementById("kembali");
+    const jumlahBayarInput = document.getElementById("jumlahBayarInput");
+
+    const calculatedTotal = currentReceiptItems.reduce((sum, item) => sum + (item.harga * item.jumlah), 0);
+    totalEl.textContent = `Rp${calculatedTotal.toLocaleString()}`;
+
+    const amountPaid = parseFloat(jumlahBayarInput.value) || 0;
+    bayarEl.textContent = `Rp${amountPaid.toLocaleString()}`;
+
+    const change = amountPaid - calculatedTotal;
+    kembaliEl.textContent = `Rp${change.toLocaleString()}`;
+}
+
+// Reset input form fields for POS
+function resetForm() {
+    document.getElementById("namaItem").value = "";
+    document.getElementById("hargaItem").value = "";
+    document.getElementById("jumlahItem").value = 1;
+    document.getElementById("namaItem").focus();
+    document.getElementById("tombolTambah").textContent = isEditMode ? "Tambahkan Item" : "Tambah Item";
+}
+
+// Function to handle transaction completion
+function completeTransaction() {
+    if (currentReceiptItems.length === 0) {
+        displayMessage("Tidak ada item di struk untuk diselesaikan.");
+        return false;
+    }
+
+    const totalAmount = currentReceiptItems.reduce((sum, item) => sum + (item.harga * item.jumlah), 0);
+    const amountPaid = parseFloat(document.getElementById("jumlahBayarInput").value) || 0;
+
+    if (amountPaid < totalAmount) {
+        displayMessage("Jumlah bayar kurang dari total transaksi!");
+        return false;
+    }
+
+    const strukCode = generateUniqueStrukCode();
+    document.getElementById("kodeStruk").textContent = strukCode;
+
+    const transactionDate = new Date().toLocaleDateString("id-ID", options);
+
+    const receiptData = {
+        code: strukCode,
+        date: transactionDate,
+        items: currentReceiptItems,
+        total: totalAmount,
+        bayar: amountPaid,
+        kembali: amountPaid - totalAmount
+    };
+
+    receiptHistory.push(receiptData);
+    localStorage.setItem('receiptHistory', JSON.stringify(receiptHistory));
+
+    // --- Update Master Barang Stock and add to Barang Keluar History ---
+    currentReceiptItems.forEach(soldItem => {
+        const masterItem = masterBarangList.find(mItem => mItem.nama.toLowerCase() === soldItem.nama.toLowerCase() || mItem.id === soldItem.nama);
+        if (masterItem) {
+            masterItem.stockAkhir -= soldItem.jumlah;
+            masterItem.totalHarga = masterItem.stockAkhir * masterItem.hargaSatuan; // Recalculate total value
+            // Add to barangKeluarHistory
+            const keluarEntry = {
+                id: masterItem.id,
+                nama: masterItem.nama,
+                jumlah: soldItem.jumlah,
+                tanggalKeluar: new Date().toISOString().split('T')[0], // YYYY-MM-DD
+                alasanKeluar: "Penjualan POS",
+                strukCode: strukCode
+            };
+            barangKeluarHistory.push(keluarEntry);
+        }
+    });
+    localStorage.setItem('masterBarangList', JSON.stringify(masterBarangList));
+    localStorage.setItem('barangKeluarHistory', JSON.stringify(barangKeluarHistory));
+    // --- End Update Master Barang Stock ---
+
+    displayMessage("Transaksi selesai! Pilih opsi di bawah.");
+    showTransactionCompletedDialog();
+    return true;
+}
+
+// Show dialog for print/download options after transaction
+function showTransactionCompletedDialog() {
+    const overlay = document.createElement("div");
+    overlay.classList.add("message-box-overlay");
+
+    const messageBox = document.createElement("div");
+    messageBox.classList.add("message-box");
+
+    const messageText = document.createElement("p");
+    messageText.textContent = "Transaksi berhasil diselesaikan!";
+    messageBox.appendChild(messageText);
+
+    const buttonGroup = document.createElement("div");
+    buttonGroup.classList.add("button-group");
+
+    const printBtn = document.createElement("button");
+    printBtn.textContent = "Cetak Struk";
+    printBtn.onclick = () => {
+        printCurrentStruk();
+        document.body.removeChild(overlay);
+        resetStruk();
+    };
+    buttonGroup.appendChild(printBtn);
+
+    const downloadBtn = document.createElement("button");
+    downloadBtn.textContent = "Unduh PDF";
+    downloadBtn.onclick = () => {
+        printCurrentStruk();
+        document.body.removeChild(overlay);
+        resetStruk();
+    };
+    buttonGroup.appendChild(downloadBtn);
+
+    const closeBtn = document.createElement("button");
+    closeBtn.textContent = "Tutup";
+    closeBtn.onclick = () => {
+        document.body.removeChild(overlay);
+        resetStruk();
+    };
+    buttonGroup.appendChild(closeBtn);
+
+    messageBox.appendChild(buttonGroup);
+    overlay.appendChild(messageBox);
+    document.body.appendChild(overlay);
+}
+
+// Print current receipt content
+function printCurrentStruk() {
+    const struk = document.getElementById("struk");
+    const win = window.open("", "", "width=400,height=600");
+    win.document.write('<html><head><title>Struk Gameriyus</title>');
+    win.document.write('<style>body{font-family:Arial;padding:20px;} .struk{max-width:300px;margin:auto;border:1px solid #000;padding:15px;background:#fff;} .struk table{width:100%;border-collapse:collapse;} .struk td, .struk th{text-align:left;padding:4px 0;} .struk .total, .struk .bayar-kembali{text-align:right;margin-top:5px;} .struk .catatan{text-align:center;font-size:0.8em;margin-top:15px;}</style>');
+    win.document.write('</head><body>');
+    win.document.write(struk.outerHTML);
+    win.document.close();
+    win.print();
+}
+
+// Reset the current receipt display and inputs
+function resetStruk() {
+  currentReceiptItems = [];
+  renderReceiptItems();
+  document.getElementById("total").textContent = "Rp0";
+  document.getElementById("bayar").textContent = "Rp0";
+  document.getElementById("kembali").textContent = "Rp0";
+  document.getElementById("kodeStruk").textContent = "";
+  document.getElementById("jumlahBayarInput").value = "";
+  resetForm();
+  if (isEditMode) {
+      toggleEditMode();
+  }
+}
+
+// Toggle edit mode for receipt items
+function toggleEditMode() {
+  isEditMode = !isEditMode;
+  const daftarItemBody = document.getElementById("daftar-item");
+  const editBtn = document.getElementById("editStrukBtn");
+  const tombolTambah = document.getElementById("tombolTambah");
+
+  resetForm();
+
+  if (isEditMode) {
+    editBtn.textContent = "Selesai Edit";
+    daftarItemBody.classList.add("edit-mode");
+    tombolTambah.textContent = "Tambahkan Item";
+    const rows = daftarItemBody.querySelectorAll("tr");
+    rows.forEach(row => {
+      row.onclick = () => editItemFromStruk(row);
+    });
+    displayMessage("Mode Edit Struk diaktifkan. Klik item untuk mengedit.");
+  } else {
+    editBtn.textContent = "Edit Struk";
+    daftarItemBody.classList.remove("edit-mode");
+    tombolTambah.textContent = "Tambah Item";
+    const rows = daftarItemBody.querySelectorAll("tr");
+    rows.forEach(row => {
+      row.onclick = null;
+    });
+    displayMessage("Mode Edit Struk dinonaktifkan.");
+  }
+}
+
+// Handle editing an item from the receipt (removes it and loads into form)
+function editItemFromStruk(row) {
+  const itemIndex = parseInt(row.dataset.index);
+  const itemToEdit = currentReceiptItems[itemIndex];
+
+  if (!itemToEdit) return;
+
+  currentReceiptItems.splice(itemIndex, 1);
+  renderReceiptItems();
+
+  updateReceiptTotals();
+
+  document.getElementById("namaItem").value = itemToEdit.nama;
+  document.getElementById("hargaItem").value = itemToEdit.harga;
+  document.getElementById("jumlahItem").value = itemToEdit.jumlah;
+
+  document.getElementById("tombolTambah").textContent = "Tambahkan Item";
+  displayMessage(`Item '${itemToEdit.nama}' dihapus dari struk untuk diedit. Tambahkan kembali setelah perubahan.`);
+}
+
+// --- Daftar Produk (Sellable Items) Functions ---
+
+function loadItemSellable() {
+  const select = document.getElementById("itemListSellable");
+  select.innerHTML = "";
+  // For simplicity, just show items from masterBarangList that are not expired and have stock > 0
+  const sellableItems = masterBarangList.filter(item => (!item.expiredDate || new Date(item.expiredDate) > new Date()) && item.stockAkhir > 0);
+
+  if (sellableItems.length === 0) {
+      const opt = document.createElement("option");
+      opt.textContent = "Tidak ada produk yang bisa dijual.";
+      opt.disabled = true;
+      select.appendChild(opt);
+      return;
+  }
+  sellableItems.forEach(item => {
+    const opt = document.createElement("option");
+    opt.value = item.id; // Use ID as value
+    // Assuming a 20% markup for selling price from purchase price for display
+    opt.textContent = `${item.nama} - Stok: ${item.stockAkhir} - Harga Jual: Rp${(item.hargaSatuan * 1.2).toLocaleString()}`;
+    select.appendChild(opt);
+  });
+}
+
+function hapusItemSellable() {
+  const select = document.getElementById("itemListSellable");
+  const selectedId = select.value;
+  if (!selectedId) {
+    displayMessage("Pilih produk yang ingin dihapus dari daftar jual!");
+    return;
+  }
+
+  // Remove from masterBarangList
+  masterBarangList = masterBarangList.filter(item => item.id !== selectedId);
+  localStorage.setItem('masterBarangList', JSON.stringify(masterBarangList));
+  loadItemSellable();
+  displayMessage("Produk berhasil dihapus dari daftar jual (dan master barang).");
+}
+
+function tambahItemSellable() {
+  const kode = document.getElementById("kodeProdukBaru").value.trim();
+  const nama = document.getElementById("namaProdukBaru").value.trim();
+  const hargaJual = parseFloat(document.getElementById("hargaJualBaru").value); // This is selling price
+
+  if (!kode || !nama || isNaN(hargaJual) || hargaJual <= 0) {
+    displayMessage("Isi Kode, Nama, dan Harga Jual dengan benar!");
+    return;
+  }
+
+  // Check if item already exists in master barang
+  const existingItem = masterBarangList.find(item => item.id === kode);
+  if (existingItem) {
+    displayMessage("Produk dengan ID ini sudah ada di master barang. Silakan edit di halaman Master Barang.");
+    return;
+  }
+
+  // When adding for sale, create a new master barang entry
+  const newItem = {
+      id: kode,
+      nama: nama,
+      stockAwal: 0, // Initial stock is 0, will be added via Barang Masuk
+      stockAkhir: 0,
+      hargaSatuan: hargaJual / 1.2, // Rough estimation of purchase price if selling price is given
+      totalHarga: 0,
+      expiredDate: '' // No expired date initially
+  };
+  masterBarangList.push(newItem);
+  localStorage.setItem('masterBarangList', JSON.stringify(masterBarangList));
+
+  loadItemSellable();
+  document.getElementById("kodeProdukBaru").value = "";
+  document.getElementById("namaProdukBaru").value = "";
+  document.getElementById("hargaJualBaru").value = "";
+  displayMessage("Produk berhasil ditambahkan ke daftar jual (dan master barang).");
+}
+
+
+// --- History Functions ---
+
+function loadOrderHistory() {
+    const historyListDiv = document.getElementById("historyList");
+    historyListDiv.innerHTML = "";
+
+    if (receiptHistory.length === 0) {
+        historyListDiv.innerHTML = '<p style="text-align: center; color: #777;">Belum ada riwayat pesanan.</p>';
+        return;
+    }
+
+    const sortedHistory = [...receiptHistory].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    sortedHistory.forEach(receipt => {
+        const historyItemDiv = document.createElement("div");
+        historyItemDiv.classList.add("history-item");
+        historyItemDiv.innerHTML = `
+            <p><strong>Kode Struk:</strong> ${receipt.code}</p>
+            <p><strong>Tanggal:</strong> ${receipt.date}</p>
+            <p><strong>Items:</strong></p>
+            <ul>
+                ${receipt.items.map(item => `<li>${item.nama} (${item.jumlah}x) - Rp${(item.harga * item.jumlah).toLocaleString()}</li>`).join('')}
+            </ul>
+            <p class="history-total">Total: Rp${receipt.total.toLocaleString()}</p>
+            <p>Bayar: Rp${receipt.bayar.toLocaleString()}</p>
+            <p>Kembali: Rp${receipt.kembali.toLocaleString()}</p>
+            <div class="history-actions">
+                <button onclick="deleteHistoryItem('${receipt.code}')">Hapus</button>
+            </div>
+        `;
+        historyListDiv.appendChild(historyItemDiv);
+    });
+}
+
+function deleteHistoryItem(codeToDelete) {
+    receiptHistory = receiptHistory.filter(receipt => receipt.code !== codeToDelete);
+    localStorage.setItem('receiptHistory', JSON.stringify(receiptHistory));
+
+    generatedStrukCodes = generatedStrukCodes.filter(code => code !== codeToDelete);
+    localStorage.setItem('generatedStrukCodes', JSON.stringify(generatedStrukCodes));
+
+    loadOrderHistory();
+    displayMessage(`Struk dengan kode ${codeToDelete} berhasil dihapus.`);
+}
+
+// --- Storage Sub-page Functions (Master Barang, Barang Masuk, Barang Keluar) ---
+
+function loadMasterBarang() {
+    const tbody = document.getElementById("masterBarangTableBody");
+    tbody.innerHTML = "";
+
+    if (masterBarangList.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #777;">Belum ada master barang.</td></tr>';
+        return;
+    }
+
+    masterBarangList.forEach((item, index) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>${item.id}</td>
+            <td>${item.nama}</td>
+            <td>${item.stockAkhir}</td>
+            <td>Rp${item.hargaSatuan.toLocaleString()}</td>
+            <td>Rp${(item.stockAkhir * item.hargaSatuan).toLocaleString()}</td>
+            <td>${item.expiredDate || '-'}</td>
+            <td>
+                <button onclick="editMasterBarang(${index})">Edit</button>
+                <button onclick="deleteMasterBarang('${item.id}')">Hapus</button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function clearMasterBarangForm() {
+    document.getElementById("masterBarangId").value = '';
+    document.getElementById("masterBarangNama").value = '';
+    document.getElementById("masterBarangStockAwal").value = '';
+    document.getElementById("masterBarangHargaSatuanBeli").value = '';
+    document.getElementById("masterBarangExpiredDate").value = '';
+}
+
+function addOrUpdateMasterBarang() {
+    const id = document.getElementById("masterBarangId").value.trim();
+    const nama = document.getElementById("masterBarangNama").value.trim();
+    const stockAwal = parseInt(document.getElementById("masterBarangStockAwal").value) || 0;
+    const hargaSatuan = parseFloat(document.getElementById("masterBarangHargaSatuanBeli").value) || 0;
+    const expiredDate = document.getElementById("masterBarangExpiredDate").value;
+
+    if (!id || !nama || isNaN(stockAwal) || isNaN(hargaSatuan)) {
+        displayMessage("Harap lengkapi semua bidang Master Barang dengan benar!");
+        return;
+    }
+
+    const existingIndex = masterBarangList.findIndex(item => item.id === id);
+
+    if (existingIndex > -1) {
+        // Update existing item
+        masterBarangList[existingIndex] = {
+            ...masterBarangList[existingIndex], // Keep old data if not updated
+            nama: nama,
+            stockAwal: stockAwal,
+            // stockAkhir remains as is, will be updated by masuk/keluar
+            hargaSatuan: hargaSatuan,
+            totalHarga: masterBarangList[existingIndex].stockAkhir * hargaSatuan,
+            expiredDate: expiredDate
+        };
+        displayMessage("Master Barang berhasil diperbarui!");
+    } else {
+        // Add new item
+        masterBarangList.push({
+            id: id,
+            nama: nama,
+            stockAwal: stockAwal,
+            stockAkhir: stockAwal, // Initial stock akhir is same as stock awal
+            hargaSatuan: hargaSatuan,
+            totalHarga: stockAwal * hargaSatuan,
+            expiredDate: expiredDate
+        });
+        displayMessage("Master Barang baru berhasil ditambahkan!");
+    }
+
+    localStorage.setItem('masterBarangList', JSON.stringify(masterBarangList));
+    loadMasterBarang();
+    clearMasterBarangForm();
+}
+
+function editMasterBarang(index) {
+    const item = masterBarangList[index];
+    if (item) {
+        document.getElementById("masterBarangId").value = item.id;
+        document.getElementById("masterBarangNama").value = item.nama;
+        document.getElementById("masterBarangStockAwal").value = item.stockAwal;
+        document.getElementById("masterBarangHargaSatuanBeli").value = item.hargaSatuan;
+        document.getElementById("masterBarangExpiredDate").value = item.expiredDate;
+        displayMessage(`Mengedit master barang: ${item.nama}.`);
+    }
+}
+
+function deleteMasterBarang(idToDelete) {
+    masterBarangList = masterBarangList.filter(item => item.id !== idToDelete);
+    localStorage.setItem('masterBarangList', JSON.stringify(masterBarangList));
+    loadMasterBarang();
+    displayMessage(`Master barang dengan ID ${idToDelete} berhasil dihapus.`);
+}
+
+function populateProductSelects(selectId) {
+    const select = document.getElementById(selectId);
+    select.innerHTML = '';
+    masterBarangList.forEach(item => {
+        const opt = document.createElement("option");
+        opt.value = item.id;
+        opt.textContent = `${item.nama} (Stok: ${item.stockAkhir})`;
+        select.appendChild(opt);
+    });
+    if (masterBarangList.length === 0) {
+        const opt = document.createElement("option");
+        opt.textContent = "Tidak ada produk tersedia.";
+        opt.disabled = true;
+        opt.selected = true;
+        select.appendChild(opt);
+    }
+}
+
+function addBarangMasuk() {
+    const productId = document.getElementById("barangMasukProduk").value;
+    const jumlah = parseInt(document.getElementById("barangMasukJumlah").value);
+    const tanggalMasuk = document.getElementById("barangMasukTanggal").value;
+
+    if (!productId || isNaN(jumlah) || jumlah <= 0 || !tanggalMasuk) {
+        displayMessage("Harap lengkapi semua bidang Barang Masuk dengan benar!");
+        return;
+    }
+
+    const masterItem = masterBarangList.find(item => item.id === productId);
+    if (masterItem) {
+        masterItem.stockAkhir += jumlah;
+        masterItem.totalHarga = masterItem.stockAkhir * masterItem.hargaSatuan; // Recalculate total value
+        localStorage.setItem('masterBarangList', JSON.stringify(masterBarangList));
+
+        const masukEntry = {
+            id: productId,
+            nama: masterItem.nama,
+            jumlah: jumlah,
+            tanggalMasuk: tanggalMasuk
+        };
+        barangMasukHistory.push(masukEntry);
+        localStorage.setItem('barangMasukHistory', JSON.stringify(barangMasukHistory));
+
+        displayMessage(`${jumlah} unit ${masterItem.nama} berhasil ditambahkan ke stok.`);
+        document.getElementById("barangMasukJumlah").value = '';
+        document.getElementById("barangMasukTanggal").value = '';
+        loadBarangMasukHistory();
+        loadMasterBarang(); // Update master barang view if needed
+        populateProductSelects('barangMasukProduk'); // Update stock display in select
+    } else {
+        displayMessage("Produk tidak ditemukan di Master Barang.");
+    }
+}
+
+function loadBarangMasukHistory() {
+    const tbody = document.getElementById("barangMasukTableBody");
+    tbody.innerHTML = "";
+
+    if (barangMasukHistory.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #777;">Belum ada riwayat barang masuk.</td></tr>';
+        return;
+    }
+
+    const sortedHistory = [...barangMasukHistory].sort((a, b) => new Date(b.tanggalMasuk) - new Date(a.tanggalMasuk));
+
+    sortedHistory.forEach((entry, index) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>${entry.tanggalMasuk}</td>
+            <td>${entry.nama}</td>
+            <td>${entry.jumlah}</td>
+            <td><button onclick="deleteBarangMasuk(${index})">Hapus</button></td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function deleteBarangMasuk(index) {
+    const entry = barangMasukHistory[index];
+    if (entry) {
+        const masterItem = masterBarangList.find(item => item.id === entry.id);
+        if (masterItem) {
+            masterItem.stockAkhir -= entry.jumlah; // Revert stock
+            masterItem.totalHarga = masterItem.stockAkhir * masterItem.hargaSatuan;
+            localStorage.setItem('masterBarangList', JSON.stringify(masterBarangList));
+        }
+        barangMasukHistory.splice(index, 1);
+        localStorage.setItem('barangMasukHistory', JSON.stringify(barangMasukHistory));
+        displayMessage("Entri barang masuk berhasil dihapus dan stok diperbarui.");
+        loadBarangMasukHistory();
+        loadMasterBarang();
+        populateProductSelects('barangMasukProduk');
+    }
+}
+
+function addBarangKeluar() {
+    const productId = document.getElementById("barangKeluarProduk").value;
+    const jumlah = parseInt(document.getElementById("barangKeluarJumlah").value);
+    const alasan = document.getElementById("barangKeluarAlasan").value.trim();
+    const tanggalKeluar = document.getElementById("barangKeluarTanggal").value;
+
+    if (!productId || isNaN(jumlah) || jumlah <= 0 || !alasan || !tanggalKeluar) {
+        displayMessage("Harap lengkapi semua bidang Barang Keluar dengan benar!");
+        return;
+    }
+
+    const masterItem = masterBarangList.find(item => item.id === productId);
+    if (masterItem) {
+        if (masterItem.stockAkhir < jumlah) {
+            displayMessage(`Stok ${masterItem.nama} tidak mencukupi. Stok saat ini: ${masterItem.stockAkhir}`);
+            return;
+        }
+
+        masterItem.stockAkhir -= jumlah;
+        masterItem.totalHarga = masterItem.stockAkhir * masterItem.hargaSatuan;
+        localStorage.setItem('masterBarangList', JSON.stringify(masterBarangList));
+
+        const keluarEntry = {
+            id: productId,
+            nama: masterItem.nama,
+            jumlah: jumlah,
+            tanggalKeluar: tanggalKeluar,
+            alasanKeluar: alasan
+        };
+        barangKeluarHistory.push(keluarEntry);
+        localStorage.setItem('barangKeluarHistory', JSON.stringify(barangKeluarHistory));
+
+        displayMessage(`${jumlah} unit ${masterItem.nama} berhasil dicatat sebagai keluar.`);
+        document.getElementById("barangKeluarJumlah").value = '';
+        document.getElementById("barangKeluarAlasan").value = '';
+        document.getElementById("barangKeluarTanggal").value = '';
+        loadBarangKeluarHistory();
+        loadMasterBarang();
+        populateProductSelects('barangKeluarProduk');
+    } else {
+        displayMessage("Produk tidak ditemukan di Master Barang.");
+    }
+}
+
+function loadBarangKeluarHistory() {
+    const tbody = document.getElementById("barangKeluarTableBody");
+    tbody.innerHTML = "";
+
+    if (barangKeluarHistory.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #777;">Belum ada riwayat barang keluar.</td></tr>';
+        return;
+    }
+
+    const sortedHistory = [...barangKeluarHistory].sort((a, b) => new Date(b.tanggalKeluar) - new Date(a.tanggalKeluar));
+
+    sortedHistory.forEach((entry, index) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>${entry.tanggalKeluar}</td>
+            <td>${entry.nama}</td>
+            <td>${entry.jumlah}</td>
+            <td>${entry.alasanKeluar}</td>
+            <td><button onclick="deleteBarangKeluar(${index})">Hapus</button></td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function deleteBarangKeluar(index) {
+    const entry = barangKeluarHistory[index];
+    if (entry) {
+        const masterItem = masterBarangList.find(item => item.id === entry.id);
+        if (masterItem) {
+            masterItem.stockAkhir += entry.jumlah; // Revert stock
+            masterItem.totalHarga = masterItem.stockAkhir * masterItem.hargaSatuan;
+            localStorage.setItem('masterBarangList', JSON.stringify(masterBarangList));
+        }
+        barangKeluarHistory.splice(index, 1);
+        localStorage.setItem('barangKeluarHistory', JSON.stringify(barangKeluarHistory));
+        displayMessage("Entri barang keluar berhasil dihapus dan stok diperbarui.");
+        loadBarangKeluarHistory();
+        loadMasterBarang();
+        populateProductSelects('barangKeluarProduk');
+    }
+}
+
+
+// Initial setup on page load
+document.addEventListener('DOMContentLoaded', () => {
+    // Set initial date/time
+    document.getElementById("tanggal").textContent = new Date().toLocaleDateString("id-ID", options);
+
+    // Initial render of receipt items (if any, though should be empty on load)
+    renderReceiptItems();
+
+    // Ensure Pembayaran Page is visible by default, and hide all storage sub-sections and its nav
+    toggleSection('pembayaranPage');
+    const storageSubNav = document.getElementById('storageSubNav');
+    if (storageSubNav) {
+        storageSubNav.style.display = 'none';
+    }
+
+
+    // Add event listener for "Jumlah Bayar" input
+    document.getElementById("jumlahBayarInput").addEventListener('input', updateReceiptTotals);
+});
+</script>
+
+</body>
+</html>
